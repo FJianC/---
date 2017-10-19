@@ -1,73 +1,77 @@
+// 0-1背包.cpp: 定义控制台应用程序的入口点。
+//
+
+#include "stdafx.h"
 #include <iostream>
 using namespace std;
 
-int x[6] = {0};											              	//辅助数组，选择储存1，不选存0
+int x[6] = { 0 };						//辅助数组，选择储存1，不选存0
 
 int main()
 {
-	int v[6] = {0, 6, 3, 5, 4, 6};						      	//下标从1开始，物品的价值
-	int w[6] = {0, 2, 2, 6, 5, 4};						      	//下标从1开始，物品的重量
-	int n = 5;												                //物品的总数
-	int c = 10;												                //背包的容量
-	int KnapSack(int v[], int w[], int n, int c);
-	int max1 = 0;
-	max1 = KnapSack(v, w, n, c);
-	cout << "max = " << max1 << "\n";						      //输出背包最大的总价值
-	for (int i = 1; i <= n; i++)
-	{
-		if (x[i])
-		{
-			cout << i << " ";								              //输出选中的物品
-		}
-	}
-	cout << "\n";
+    int v[6] = { 0, 6, 3, 5, 4, 6 };				//下标从1开始，物品的价值
+    int w[6] = { 0, 2, 2, 6, 5, 4 };				//下标从1开始，物品的重量
+    int n = 5;							//物品的总数
+    int c = 10;							//背包的容量
+    int KnapSack(int v[], int w[], int n, int c);
+    int max1 = 0;
+    max1 = KnapSack(v, w, n, c);
+    cout << "max = " << max1 << "\n";				//输出背包最大的总价值
+    for (int i = 1; i <= n; i++)
+    {
+        if (x[i])
+        {
+            cout << i << " ";					//输出选中的物品
+        }
+    }
+    cout << "\n";
     return 0;
 }
 
-int KnapSack(int v[], int w[], int n, int c)				//0/1背包算法函数
+int KnapSack(int v[], int w[], int n, int c)			//0/1背包算法函数
 {
-	int V[10][100];											              //设置辅助数组，i为物品，j为背包容量，存的是总价值
-	for (int i = 0; i <= n; i++)
-	{
-		V[i][0] = 0;										                //第一列全为0
-	}
-	for (int j = 0; j <= c; j++)
-	{
-		V[0][j] = 0;										                //第一行全为0
-	}
-	for (int i = 1; i <= n; i++)							        //从第一个物品开始
-	{
-		for (int j = 1; j <= c; j++)						        //从背包容量为1开始
-		{
-			if (j < w[i])									                //如果背包容量 j 小于 物品 i 的重量
-			{
-				V[i][j] = V[i - 1][j];						          //则第i个物品在j容量的总价值 = 第i-1个物品在j容量的总价值（上一个物品）
-			}
-			else											                    //如果背包容量 j 大于 物品 i 的重量
-			{
-				if (V[i - 1][j - w[i]] + v[i] > V[i - 1][j])//则（第i-1个物品在 j - 第i个重量 容量的价值）+（物品i的价值）
-				{											                      //与（第i-1个物品在j容量的总价值）比较
-					V[i][j] = V[i - 1][j - w[i]] + v[i];
-				}											                      //			    { if(j > w[i])	V[i - 1][j]
-				else										                    //V[i][j] = {
-				{											                      //			    { if(j <= w[i])	Max(V[i - 1][j - w[i]] + v[i], V[i - 1][j])
-					V[i][j] = V[i - 1][j];
-				}
-			}
-		}
-	}
-	for (int i = n, j = c; i > 0; i--)						    //记录选中的物品
-	{														                      //从最后物品最大的容量V[n][c]开始
-		if (V[i][j] > V[i - 1][j])							        //如果，容量相同时， i 物品与 i-1 的总价值不同
-		{												                      	//则说明，选中了 i 物品
-			x[i] = 1;										                  //选中的记录 1
-			j -= w[i];									                	//容量 j = j - 物品i的重量
-		}
-		else											                    	//如果相同
-		{													                      //则说明，没有选中物品 i 
-			x[i] = 0;										                  //没选中记录 0
-		}
-	}
-	int result = V[n][c];
-	return result;
+    int V[10][100];						//设置辅助数组，i为物品，j为背包容量，存的是总价值
+    for (int i = 0; i <= n; i++)
+    {
+        V[i][0] = 0;						//第一列全为0
+    }
+    for (int j = 0; j <= c; j++)
+    {
+        V[0][j] = 0;						//第一行全为0
+    }
+    for (int i = 1; i <= n; i++)				//从第一个物品开始
+    {
+        for (int j = 1; j <= c; j++)				//从背包容量为1开始
+        {
+            if (j < w[i])					//如果背包容量 j 小于 物品 i 的重量
+            {
+                V[i][j] = V[i - 1][j];				//则第i个物品在j容量的总价值 = 第i-1个物品在j容量的总价值（上一个物品）
+            }
+            else						//如果背包容量 j 大于 物品 i 的重量
+            {
+                if (V[i - 1][j - w[i]] + v[i] > V[i - 1][j])	//则（第i-1个物品在 j - 第i个重量 容量的价值）+（物品i的价值）
+                {						//与（第i-1个物品在j容量的总价值）比较
+                    V[i][j] = V[i - 1][j - w[i]] + v[i];
+                }						//		{ if(j > w[i])	V[i - 1][j]
+                else						//V[i][j] = 	{
+                {						//		{ if(j <= w[i])	Max(V[i - 1][j - w[i]] + v[i], V[i - 1][j])
+                    V[i][j] = V[i - 1][j];
+                }
+            }
+        }
+    }
+    for (int i = n, j = c; i > 0; i--)				//记录选中的物品
+    {								//从最后物品最大的容量V[n][c]开始
+        if (V[i][j] > V[i - 1][j])				//如果，容量相同时， i 物品与 i-1 的总价值不同
+        {							//则说明，选中了 i 物品
+            x[i] = 1;						//选中的记录 1
+            j -= w[i];						//容量 j = j - 物品i的重量
+        }
+        else							//如果相同
+        {							//则说明，没有选中物品 i 
+            x[i] = 0;						//没选中记录 0
+        }
+    }
+    int result = V[n][c];
+    return result;
 }
