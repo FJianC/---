@@ -1,0 +1,34 @@
+#include <iostream>
+
+int p[3];
+int used[4];
+
+int main()
+{
+    void print_permutation(int n, int cur);
+    print_permutation(3, 0);
+    return 0;
+}
+
+void print_permutation(int n, int cur)      //任务总数 n, 人数 cur (从0开始)
+{
+    if (n == cur)                           //任务分配完成
+    {
+        for (int i = 0; i < n; i++)
+        {
+            std::cout << p[i] << " ";
+        }
+        std::cout << "\n";
+        return ;
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        if (!used[i])                       //全为0的辅助数组，用于记录是否被使用（0为未用，1为已用）
+        {
+            p[cur] = i;                     //分配任务 i 给第 cur 个人
+            used[i] = 1;                    //任务 i 已经使用，则为1
+            print_permutation(n, cur + 1);  //递归分配下一个
+            used[i] = 0;                    //分配结束后，进入下一轮任务分配，所以要标记任务 i 为未用状态
+        }
+    }
+}
