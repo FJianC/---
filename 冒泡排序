@@ -1,0 +1,42 @@
+#include <iostream>
+
+int main()
+{
+    int r[6] = {5, 4, 3, 3, 2, 1};
+    int n = 5;
+    void BubbleSort(int r[], int n);
+    BubbleSort(r, n);
+    for each (int var in r)
+    {
+        std::cout << var << " ";
+    }
+    std::cout << "\n";
+    return 0;
+}
+
+void BubbleSort(int r[], int n)
+{
+    int temp;
+    int key = 1;                            //有序则为真
+    int flag = n;                           //内循环的边界
+    int count;                              //记录最后一次发生交换的位置
+    for (int i = 0; i <= n - 1; i++)
+    {
+        for (int j = 0; j < flag; j++)
+        {
+            if (r[j] > r[j + 1])
+            {
+                temp = r[j];
+                r[j] = r[j + 1];
+                r[j + 1] = temp;
+                key = 0;                    //发生交换则说明无序则为假
+                count = j;
+            }
+        }
+        if (key)                            //没有发生交换说明已有序则退出循环
+        {
+            break;
+        }
+        flag = count;                       //最后一次发生的位置为边界
+    }
+}
